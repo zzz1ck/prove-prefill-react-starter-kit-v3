@@ -3,19 +3,22 @@ import { AxiosResponse, } from "axios";
 //module import
 import { API_BASE_URL, apiRequest, mapIsMobileToFlowtype, mockResponse, } from "../(constants)";
 import { Flowtype, Next } from "../(definitions)";
+import moment from "moment";
 
 // Define interfaces
 interface StartRequestParams {
     isMobile: boolean;
     phoneNumber: string;
-    last4SSN: string;
+    last4SSN?: string;
+    dob?: string;
     finalTargetUrl?: string;
 }
 
 export interface StartRequestPayload {
     flowType: Flowtype;
     phoneNumber: string;
-    last4SSN: string;
+    last4SSN?: string;
+    dob?: string;
     finalTargetUrl?: string;
 }
 
@@ -41,6 +44,7 @@ export const v3StartRequest = async ({
     isMobile,
     phoneNumber,
     last4SSN,
+    dob,
 }: StartRequestParams): Promise<AxiosResponse<StartRequestResponse>> => {
     if (!API_BASE_URL) {
         return mockResponse<StartRequestResponse>(MOCK_RESPONSE_DATA);
@@ -50,6 +54,7 @@ export const v3StartRequest = async ({
         flowType: mapIsMobileToFlowtype(isMobile),
         phoneNumber,
         last4SSN,
+        dob: dob ? moment(dob).format('YYYY-MM-DD') : undefined,
     };
 
     return apiRequest<StartRequestResponse>('/v3/start', payload, MOCK_RESPONSE_DATA);

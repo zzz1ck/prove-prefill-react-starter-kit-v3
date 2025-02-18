@@ -39,7 +39,7 @@
         "ssn": {
             "label": "Social Security Number",
             "errorText": "Enter the last 4 of your social security number",
-            "moreInfo": "By providing your last 4 of your SSN, we will attempt to find your information to expedite your request.",
+            "moreInfo": "By providing your last 4 of your SSN or Date of Birth, we will attempt to find your information to expedite your request.",
             "disclaimer": "This is required by finance regulations"
         },
         "phone": {

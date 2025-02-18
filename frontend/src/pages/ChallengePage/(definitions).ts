@@ -7,9 +7,10 @@ import { AppEnv } from '../../services/prove-service/(definitions)';
 export const createValidationSchema = (appEnv: AppEnv) => yup.object().shape({
     last4SSN: yup
         .string()
-        .matches(/^\d{4}$/, 'Must be exactly 4 digits')
-        .required('Last 4 SSN is required')
-        .max(4, 'Must be exactly 4 digits'),
+        .optional(),
+    dob: yup
+        .string()
+        .optional(),
     phoneNumber: yup
         .string()
         .test('is-valid-phone', 'Invalid phone number', (value: string | undefined) => {
@@ -20,6 +21,8 @@ export const createValidationSchema = (appEnv: AppEnv) => yup.object().shape({
             }
         })
         .required('Phone number is required')
-});
+}).test('either-ssn-or-dob', 'Either Last 4 SSN or DOB is required', function(value) {
+        return Boolean(value.last4SSN) || Boolean(value.dob);
+    });
 
 export type ChallengePageData = yup.InferType<ReturnType<typeof createValidationSchema>>;

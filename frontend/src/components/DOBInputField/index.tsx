@@ -21,7 +21,7 @@ const DOBInputField = (props: DOBInputFieldProps) => {
         <LocalizationProvider dateAdapter={AdapterMoment}>
             <DatePicker
                 label={props.label}
-                inputFormat="M/D/YYYY"
+                inputFormat="MM-DD-YYYY"
                 value={props.dob}
                 onChange={props.onDOBChanged}
                 disabled={props.disabled}
@@ -35,8 +35,11 @@ const DOBInputField = (props: DOBInputFieldProps) => {
                                 : null
                         }
                         fullWidth
-                        placeholder="MM/DD/YYYY"
+                        placeholder="MM-DD-YYYY"
                         sx={{
+                            '.MuiInputBase-root': {
+                                borderRadius: '12px',
+                            },
                             '.MuiPickersToolbar-root': {
                                 borderRadius: '12px',
                             },

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { Box, CircularProgress, Container, Grid, InputAdornment, Stack, Typography } from '@mui/material';
-import { useForm, } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // module import 
 import { NAV_HEIGHT } from '../../constants';
@@ -15,7 +15,8 @@ import * as proveService from '../../services/prove-service';
 import FormTextInput from '../../components/FormTextInput';
 import { ChallengePageData, createValidationSchema } from './(definitions)';
 import { AppEnv } from '../../services/prove-service/(definitions)';
-
+import DOBInputField from '../../components/DOBInputField';
+import moment from 'moment';
 const ChallengePage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -46,18 +47,20 @@ const ChallengePage: React.FC = () => {
         defaultValues: {
             phoneNumber: phoneNumber || '',
             last4SSN: '',
+            dob: '',
         }
     });
 
     const handleContinueButton = async (data: ChallengePageData) => {
         try {
-            const { last4SSN, phoneNumber } = data;
+            const { last4SSN, phoneNumber, dob } = data;
             setPhoneNumber(phoneNumber);
             // Call /start endpoint here - v3StartRequest
             const response = await proveService.v3StartRequest({
                 isMobile,
                 phoneNumber,
                 last4SSN,
+                dob,
                 finalTargetUrl: 'http://127.0.0.1:3000/sms-result',
             });
 
@@ -138,6 +141,21 @@ const ChallengePage: React.FC = () => {
                                         ***  **
                                     </InputAdornment>
                                 }
+                            />
+                        </Grid>
+                        <Grid item xs={12} mb={2}>
+                            <Controller
+                                name="dob"
+                                control={control}
+                                render={({ field: { ref: fieldRef, value, onChange, ...fieldProps }, fieldState: { error = undefined } }) => (
+                                    <DOBInputField
+                                        {...fieldProps}
+                                        label={t('dataCollection.dob.label')}
+                                        dob={value ? moment(value, 'MM-DD-YYYY') : null}
+                                        onDOBChanged={onChange}
+                                        dobError={false}
+                                    />
+                                )}
                             />
                             <Typography
                                 fontSize="1.0rem"

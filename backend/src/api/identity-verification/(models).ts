@@ -2,7 +2,8 @@ import { body } from 'express-validator';
 
 export const v3StartRequestValidation = [
     body('phoneNumber').isString().withMessage('Phone number must be a string'),
-    body('last4SSN').isString().isLength({ min: 4, max: 4 }).withMessage('Last 4 SSN must be exactly 4 digits'),
+    body('last4SSN').optional().isString().isLength({ max: 4 }).withMessage('Last 4 SSN must be exactly 4 digits'),
+    body('dob').optional().isString().isLength({ min: 10, max: 10 }).withMessage('DOB must be exactly 10 digits'),
     body('ipAddress').optional().isIP().withMessage('IP address must be valid'),
     body('flowType').isIn(['desktop', 'mobile']).withMessage('Flow type must be either desktop or mobile'),
     body('finalTargetUrl').optional().isURL().withMessage('Final target URL must be valid'),
